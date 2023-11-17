@@ -1,5 +1,17 @@
 # allstar-financial
 
+### Tech Stack:
+   - Back-end:
+     - Java 17
+     
+   - Front-end:
+     - Angular
+
+   - Database:
+     - MySQL 
+     
+---------------------------------------------------------------------------------
+
 ### Application Requirements:
 
 ### User
