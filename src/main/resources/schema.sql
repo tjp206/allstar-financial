@@ -19,6 +19,8 @@
 
 CREATE SCHEMA IF NOT EXISTS allstarfinancial;
 
+SET TIME_ZONE = 'SYSTEM';
+
 USE allstarfinancial;
 
 DROP TABLE IF EXISTS Users;
@@ -36,8 +38,8 @@ CREATE TABLE Users
     bio             VARCHAR(255) DEFAULT NULL,
     user_active     BOOLEAN DEFAULT FALSE,
     user_unlocked   BOOLEAN DEFAULT TRUE,
-    created_ts      DATETIME DEFAULT CURRENT_TIMESTAMP
-    has_tfa         BOOLEAN DEFAULT FALSE,
+    created_ts      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    using_tfa       BOOLEAN DEFAULT FALSE,
     image_url       VARCHAR(255) DEFAULT 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
     CONSTRAINT UQ_Users_Email UNIQUE (email)
 );
@@ -97,7 +99,7 @@ CREATE TABLE AccountVerifications
     url             VARCHAR(255) NOT NULL,
     -- veri_date       DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT UQ_AccountVerifications_User_Id UNIQUE (user_id)
+    CONSTRAINT UQ_AccountVerifications_User_Id UNIQUE (user_id),
     CONSTRAINT UQ_AccountVerifications_Url UNIQUE (url)
 );
 
@@ -110,7 +112,7 @@ CREATE TABLE ResetPasswordVerifications
     url                 VARCHAR(255) NOT NULL,
     expiration_date     DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT UQ_ResetPasswordVerifications_User_Id UNIQUE (user_id)
+    CONSTRAINT UQ_ResetPasswordVerifications_User_Id UNIQUE (user_id),
     CONSTRAINT UQ_ResetPasswordVerifications_Url UNIQUE (url)
 );
 
@@ -123,7 +125,7 @@ CREATE TABLE TwoFactorVerifications
     veri_code           VARCHAR(10) NOT NULL,
     expiration_date     DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT UQ_TwoFactorVerifications_User_Id UNIQUE (user_id)
+    CONSTRAINT UQ_TwoFactorVerifications_User_Id UNIQUE (user_id),
     CONSTRAINT UQ_TwoFactorVerifications_Veri_Code UNIQUE (veri_code)
 );
 
