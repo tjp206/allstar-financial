@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository<User> {
     @Override
     public User createUser(User user) {
         //check email is unique
-        if(getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new ApiException("Email already in use. Please try again with a different email address.")
+        if(getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new ApiException("Email already in use. Please try again with a different email address.");
         // save new user
         try {
             KeyHolder holder = new GeneratedKeyHolder();
@@ -49,15 +49,17 @@ public class UserRepositoryImpl implements UserRepository<User> {
             // send verification url
             String verificationUrl = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
             // save url in verifications table
+            jdbcTemplate.update(INSERT_ACCOUNT_VERIFICATION_URL_QUERY, Map.of("userId", user.getId(), "url", verificationUrl));
             // send email to user with verification url
+            // emailService.sendVerificationUrl(user.getFirstName(), user.getEmail(), verificationUrl, ACCOUNT);
+            user.setIsUserActive(false);
+            user.setIsUserUnlocked(true);
             // return newly created user
+            return user;
             // if error, throw exception with proper message
-        } catch (EmptyResultDataAccessException exception) {
-
         } catch (Exception exception) {
-
+            throw new ApiException("Sorry, you've encountered an error. Please try again.");
         }
-        return null;
     }
 
     @Override
@@ -93,6 +95,6 @@ public class UserRepositoryImpl implements UserRepository<User> {
     }
 
     private String getVerificationUrl(String urlKey, String type) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify" + type + "/" + urlKey).toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + type + "/" + urlKey).toUriString();
     }
 }

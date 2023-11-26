@@ -33,11 +33,11 @@ public class User {
     private String phone;
     private String title;
     private String bio;
+    // is user enabled
     private Boolean isUserActive;
+    // is user account not locked
     private Boolean isUserUnlocked;
     private LocalDateTime createdTs;
     private Boolean isUsingTfa;
     private String imageUrl;
-
-
 }
