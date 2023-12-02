@@ -14,7 +14,8 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static tjp6.allstarfinancial.enumeration.RoleType.ROLE_USER;
-import static tjp6.allstarfinancial.query.RoleQuery.*;
+import static tjp6.allstarfinancial.query.RoleQuery.INSERT_ROLE_TO_USER_QUERY;
+import static tjp6.allstarfinancial.query.RoleQuery.SELECT_ROLE_BY_NAME_QUERY;
 
 @Repository
 @RequiredArgsConstructor
@@ -52,11 +53,13 @@ public class RoleRepositoryImpl implements RoleRepository<Role> {
     public void addRoleToUser(Long userId, String roleName) {
         log.info("Adding role {} to user id: {}", roleName, userId);
         try {
-            Role role = jdbcTemplate.queryForObject(SELECT_ROLE_BY_NAME, Map.of("roleName", roleName), new RoleRowMapper());
+            Role role = jdbcTemplate.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName), new RoleRowMapper());
+//            log.info("*********************** ROLE DOES NOT EXIST: " + role);
             jdbcTemplate.update(INSERT_ROLE_TO_USER_QUERY, Map.of("userId", userId, "roleId", requireNonNull(role).getId()));
         } catch (EmptyResultDataAccessException exception) {
             throw new ApiException("No role found with name: " + ROLE_USER.name());
         } catch (Exception exception) {
+            log.error(exception.getMessage());
             throw new ApiException("Sorry, you've encountered an error. Please try again.");
         }
     }

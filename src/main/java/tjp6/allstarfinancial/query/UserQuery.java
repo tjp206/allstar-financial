@@ -8,7 +8,7 @@ public class UserQuery {
             "last_name, " +
             "email, " +
             "password) " +
-            "VALUES (:firstName, :lastname, :email, :password) ";
+            "VALUES (:firstName, :lastName, :email, :password) ";
 
 
     public static final String COUNT_USER_EMAIL_QUERY = "SELECT COUNT(*) FROM Users WHERE email = :email";

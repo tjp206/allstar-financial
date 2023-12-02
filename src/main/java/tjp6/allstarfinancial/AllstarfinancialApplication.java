@@ -2,10 +2,11 @@ package tjp6.allstarfinancial;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@SpringBootApplication
+@SpringBootApplication // (exclude = {SecurityAutoConfiguration.class})
 public class AllstarfinancialApplication {
 
 	private static final int STRENGTH = 12;
@@ -18,5 +19,4 @@ public class AllstarfinancialApplication {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(STRENGTH);
 	}
-
 }

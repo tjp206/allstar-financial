@@ -2,7 +2,6 @@ package tjp6.allstarfinancial.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -17,7 +16,6 @@ import tjp6.allstarfinancial.exception.ApiException;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -58,6 +56,7 @@ public class UserRepositoryImpl implements UserRepository<User> {
             return user;
             // if error, throw exception with proper message
         } catch (Exception exception) {
+            log.error(exception.getMessage());
             throw new ApiException("Sorry, you've encountered an error. Please try again.");
         }
     }

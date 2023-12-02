@@ -7,7 +7,7 @@ public class RoleQuery {
                     "role_id) " +
                     "VALUES (:userId, :roleId) ";
 
-    public static final String SELECT_ROLE_BY_NAME =
-            "SELECT * FROM Roles WHERE name = :name";
+    public static final String SELECT_ROLE_BY_NAME_QUERY =
+            "SELECT * FROM Roles WHERE role_name = :name";
 
 }
